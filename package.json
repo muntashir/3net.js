@@ -1,0 +1,19 @@
+{
+    "name": "3net.js",
+    "version": "0.0.1",
+    "description": "A simple library for implementing 3 layer neural networks",
+    "main": "index.js",
+    "keywords": ["neural network", "machine learning"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/muntashir/"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "license": "ISC",
+    "author": "Muntashir <muntashir.hossain@uwaterloo.ca> (http://muntashir.com/)",
+    "dependencies": {
+        "mathjs": "^2.1.1"
+    }
+}
