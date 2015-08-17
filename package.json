@@ -1,9 +1,12 @@
 {
     "name": "3net.js",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A simple library for implementing 3 layer neural networks",
     "main": "index.js",
-    "keywords": ["neural network", "machine learning"],
+    "keywords": [
+    "neural network",
+    "machine learning"
+  ],
     "repository": {
         "type": "git",
         "url": "https://github.com/muntashir/"
@@ -12,8 +15,17 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "license": "ISC",
-    "author": "Muntashir <muntashir.hossain@uwaterloo.ca> (http://muntashir.com/)",
+    "author": {
+        "name": "Muntashir",
+        "email": "muntashir.hossain@uwaterloo.ca",
+        "url": "http://muntashir.com/"
+    },
     "dependencies": {
         "mathjs": "^2.1.1"
-    }
+    },
+    "gitHead": "fd2f0bc5d74bb032e4365b5c6181557820921f8b",
+    "readme": "ERROR: No README data found!",
+    "_id": "3net.js@0.0.1",
+    "_shasum": "c594ad9cbdae82a140c5de8f1015e07219f07c35",
+    "_from": "3net.js@*"
 }

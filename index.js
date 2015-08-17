@@ -5,35 +5,34 @@ neuralNetwork.prototype.predict = function (input) {
     if (input.length !== this.layer1) return false;
 
     //Layer 1
-    this.z1 = math.concat([1], input);
-    this.a1 = neuralMath.sigmoid(a1);
+    this.z1 = input;
+    this.a1 = math.concat([1], neuralMath.sigmoid(this.z1));
 
     //Layer 2
-    this.z2 = math.multiply(this.theta1, math.concat([1], z1));
-    this.a2 = neuralMath.sigmoid(a2);
+    this.z2 = math.multiply(this.theta1, this.a1);
+    this.a2 = math.concat([1], neuralMath.sigmoid(this.z2));
 
     //Layer 3
-    this.z3 = math.multiply(this.theta2, math.concat([1], z2));
-    this.a3 = neuralMath.sigmoid(a3);
+    this.z3 = math.multiply(this.theta2, this.a2);
+    this.a3 = neuralMath.sigmoid(this.z3);
 
-    return a3;
+    return this.a3;
 }
 
 neuralNetwork.prototype.train = function (input, label, learning_rate, iters) {
     if (!iters) iters = 500;
     if (!learning_rate) learning_rate = 0.1;
-    if (!regularization_parameter) regularization_parameter = 0;
     if (label.length !== this.layer3) return false;
 
     this.predict(input);
     if (!this.a3) return false;
 
     var d3 = math.subtract(this.a3, label);
-    var d2 = math.dotMultiply(math.multiply(math.transpose(this.theta2), d3), neuralMath.dSigmoid(this.z2));
-    d2 = math.subset(d2, math.index(math.range(1, math.size(d2))));
+    var d2 = math.dotMultiply(math.multiply(math.transpose(this.theta2), d3), neuralMath.dSigmoid(math.concat([1], this.z2)));
+    d2 = math.subset(d2, math.index(math.range(1, math.size(d2)[0])));
 
-    this.theta2gradient += math.multiply(this.d3, this.a2);
-    this.theta1gradient += math.multiply(this.d2, this.a1);
+    this.theta2gradient = math.add(this.theta2gradient, neuralMath.outerProduct(d3, this.a2));
+    this.theta1gradient = math.add(this.theta1gradient, neuralMath.outerProduct(d2, this.a1));
 
     this.theta1 = neuralMath.gradientDescent(this.theta1, this.theta1gradient, iters, learning_rate);
     this.theta2 = neuralMath.gradientDescent(this.theta2, this.theta2gradient, iters, learning_rate);
