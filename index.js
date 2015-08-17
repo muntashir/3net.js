@@ -5,8 +5,7 @@ neuralNetwork.prototype.predict = function (input) {
     if (input.length !== this.layer1) return false;
 
     //Layer 1
-    this.z1 = input;
-    this.a1 = math.concat([1], neuralMath.sigmoid(this.z1));
+    this.a1 = math.concat([1], input);
 
     //Layer 2
     this.z2 = math.multiply(this.theta1, this.a1);
@@ -44,13 +43,12 @@ function neuralNetwork(layer1, layer2, layer3) {
     this.layer2 = layer2;
     this.layer3 = layer3;
 
-    this.theta1 = math.random([layer2, layer1 + 1]);
-    this.theta2 = math.random([layer3, layer2 + 1]);
+    this.theta1 = math.random([layer2, layer1 + 1], -1, 1);
+    this.theta2 = math.random([layer3, layer2 + 1], -1, 1);
 
     this.theta1gradient = math.zeros([layer2, layer1 + 1]);
     this.theta2gradient = math.zeros([layer3, layer2 + 1]);
 
-    this.z1 = math.zeros(layer1 + 1);
     this.a1 = math.zeros(layer1 + 1);
     this.z2 = math.zeros(layer2 + 1);
     this.a2 = math.zeros(layer2 + 1);
@@ -62,4 +60,4 @@ function createNet(layer1, layer2, layer3) {
     return new neuralNetwork(layer1, layer2, layer3);
 }
 
-module.exports = createNet;
+exports.createNet = createNet;
