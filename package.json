@@ -9,7 +9,7 @@
   ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/muntashir/"
+        "url": "https://github.com/muntashir/3net.js/"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
