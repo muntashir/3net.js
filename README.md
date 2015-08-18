@@ -1,8 +1,10 @@
 # 3net.js
 
+A simple library for implementing 3 layer neural networks
+
 [![NPM](https://nodei.co/npm/3net.js.png)](https://npmjs.org/package/3net.js)
 
-###### Example
+#### Example
     var three_net = require('3net.js');  //Install with 'npm install 3net.js'
     
     //Initialization
@@ -21,5 +23,3 @@
     //Importing and exporting
     var savedNet = net.exportNet(); //Exports as JSON
     var copiedNet = three_net.importNet(savedNet); //Imports as JSON
-
-A simple library for implementing 3 layer neural networks
