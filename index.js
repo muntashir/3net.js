@@ -18,24 +18,32 @@ neuralNetwork.prototype.predict = function (input) {
     return this.a3;
 }
 
-neuralNetwork.prototype.train = function (input, label, learning_rate, iters) {
+neuralNetwork.prototype.train = function (input, label, learning_rate, iters, regularization) {
     if (!iters) iters = 500;
     if (!learning_rate) learning_rate = 0.1;
+    if (!regularization) regularization = 1;
     if (label.length !== this.layer3) return false;
+    if (input.length !== this.layer1) return false;
 
+    [this.theta1, this.theta2] = neuralMath.gradientDescent(this.backpropagation, this.theta1, this.theta2, this.theta1gradient, this.theta2gradient, iters, learning_rate);
+    return true;
+}
+
+neuralNetwork.prototype.backpropagation = function () {
+    //Forward
     this.predict(input);
-    if (!this.a3) return false;
 
+    //Backwards
     var d3 = math.subtract(this.a3, label);
     var d2 = math.dotMultiply(math.multiply(math.transpose(this.theta2), d3), neuralMath.dSigmoid(math.concat([1], this.z2)));
     d2 = math.subset(d2, math.index(math.range(1, math.size(d2)[0])));
 
+    //Get gradients
     this.theta2gradient = math.add(this.theta2gradient, neuralMath.outerProduct(d3, this.a2));
     this.theta1gradient = math.add(this.theta1gradient, neuralMath.outerProduct(d2, this.a1));
 
-    this.theta1 = neuralMath.gradientDescent(this.theta1, this.theta1gradient, iters, learning_rate);
-    this.theta2 = neuralMath.gradientDescent(this.theta2, this.theta2gradient, iters, learning_rate);
-    return true;
+    return [this.theta1gradient, this.theta2gradient];
+
 }
 
 function neuralNetwork(layer1, layer2, layer3) {

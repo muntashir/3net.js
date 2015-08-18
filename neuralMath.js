@@ -8,13 +8,6 @@ function dSigmoid(x) {
     return math.dotMultiply(sigmoid(x), math.subtract(1, sigmoid(x)));
 }
 
-function gradientDescent(params, gradient, iters, learning_rate) {
-    for (var i = 0; i < iters; i += 1) {
-        params = math.subtract(params, math.dotMultiply(learning_rate, gradient));
-    }
-    return params;
-}
-
 function outerProduct(x, y) {
     var z = math.zeros([math.size(x)[0], math.size(y)[0]]);
     for (var i = 0; i < math.size(x)[0]; i += 1) {
@@ -26,7 +19,17 @@ function outerProduct(x, y) {
     return z;
 }
 
+function getCost(pred, actual) {
+    if (pred.length !== actual.length) return false;
+    var cost = 0;
+    for (var i = 0; i < pred.length; i += 1) {
+        if (actual[i] === 0) cost += -math.log(1 - pred[i]);
+        if (actual[i] === 1) cost += -math.log(pred[i]);
+    }
+    return cost;
+}
+
 exports.sigmoid = sigmoid;
 exports.dSigmoid = dSigmoid;
-exports.gradientDescent = gradientDescent;
 exports.outerProduct = outerProduct;
+exports.getCost = getCost;
