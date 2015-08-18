@@ -19,8 +19,10 @@ A simple library for implementing 3 layer neural networks
         "error_bound": 0.001    // If the change in cost is less than this value during gradient descent, it finishes. Default is 0.001.
     };
     
-    // Data and label must be an array matching the dimensions of the input layer and output layer. If options is not specified, the default values will be used. Returns true if training was successful, else returns false.
-    if (net.train(data, label, options)) console.log("training complete");  
+    // Data and label must be an array matching the dimensions of the input layer and output layer. 
+    // If options is not specified, the default values will be used. Returns true if training was successful, else returns false.
+    var success = net.train(data, label, options);
+    if (success) console.log("training complete");  
     
 #### Predicting
     net.predict(data);  // Returns an array with the output layer activations
