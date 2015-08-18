@@ -51,7 +51,7 @@ neuralNetwork.prototype.gradientDescent = function (input, label, options) {
         this.backpropagation(input, label, options);
 
         var currentCost = neuralMath.getCost(this.a3, label, [this.theta1, this.theta2], options);
-        if (i > 0 && math.abs(currentCost - lastCost) <= 0.001) return;
+        if (i > 0 && (math.abs(currentCost - lastCost) <= options.error_bound || currentCost > lastCost)) return;
         lastCost = currentCost;
 
         this.theta1 = math.subtract(this.theta1, math.dotMultiply(options.learning_rate, this.theta1gradient));
@@ -64,6 +64,7 @@ neuralNetwork.prototype.train = function (input, label, options) {
     if (!options.iters) options.iters = 500;
     if (!options.learning_rate) options.learning_rate = 0.5;
     if (!options.regularization) options.regularization = 0.1;
+    if (!options.error_bound) options.error_bound = 0.001;
     if (label.length !== this.layer3) return false;
     if (input.length !== this.layer1) return false;
 
