@@ -1,10 +1,10 @@
 {
     "name": "3net.js",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "A simple library for implementing 3 layer neural networks",
     "main": "index.js",
     "keywords": [
-    "neural", "network", "machine", "learning", "3netjs", "3net"
+        "neural", "network", "machine", "learning", "3netjs", "3net", "data", "multilayer", "perceptron"
     ],
     "repository": {
         "type": "git",
@@ -21,9 +21,5 @@
     },
     "dependencies": {
         "mathjs": "^2.1.1"
-    },
-    "gitHead": "fd2f0bc5d74bb032e4365b5c6181557820921f8b",
-    "_id": "3net.js@0.0.1",
-    "_shasum": "c594ad9cbdae82a140c5de8f1015e07219f07c35",
-    "_from": "3net.js@*"
+    }
 }
