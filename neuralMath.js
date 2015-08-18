@@ -19,12 +19,26 @@ function outerProduct(x, y) {
     return z;
 }
 
-function getCost(pred, actual) {
+function getCost(pred, actual, theta, options) {
     if (pred.length !== actual.length) return false;
     var cost = 0;
     for (var i = 0; i < pred.length; i += 1) {
         if (actual[i] === 0) cost += -math.log(1 - pred[i]);
         if (actual[i] === 1) cost += -math.log(pred[i]);
+    }
+    if (options.regularization) {
+        var regCost = 0;
+        for (var i = 0; i < math.size(theta[0])[0]; i += 1) {
+            for (var j = 1; j < math.size(theta[0])[1]; j += 1) {
+                regCost += theta[0][i][j] ^ 2;
+            }
+        }
+        for (var i = 0; i < math.size(theta[1])[0]; i += 1) {
+            for (var j = 1; j < math.size(theta[1])[1]; j += 1) {
+                regCost += theta[1][i][j] ^ 2;
+            }
+        }
+        cost += regCost * (options.regularization / 2);
     }
     return cost;
 }
