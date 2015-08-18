@@ -18,7 +18,7 @@ A simple library for implementing 3 layer neural networks
     net.train(data, label, options);  
     
     //Predicting
-    net.predict(data);  //Returns a 10 dimensional array of the output neurons activations
+    net.predict(data);  //Returns a 10 dimensional array of the output neuron activations
     
     //Importing and exporting
     var savedNet = net.exportNet(); //Exports as JSON
