@@ -74,8 +74,8 @@ neuralNetwork.prototype.gradientDescent = function (input, label, options) {
 //Trains one set at a time for online networks
 neuralNetwork.prototype.train = function (input, label, options) {
     if (!options) options = {};
-    if (!options.learning_rate) options.learning_rate = 0.5;
-    if (!options.regularization) options.regularization = 0.1;
+    if (!options.learning_rate) options.learning_rate = 0.3;
+    if (!options.regularization) options.regularization = 0.3;
     if (label.length !== this.layer3) return false;
     if (input.length !== this.layer1) return false;
 
@@ -84,21 +84,19 @@ neuralNetwork.prototype.train = function (input, label, options) {
 }
 
 //Trains on a training set using stochastic gradient descent
-neuralNetwork.prototype.trainSet = function (input, label, options) {
+neuralNetwork.prototype.trainSet = function (inputs, labels, options) {
     if (!options) options = {};
-    if (!options.iters) options.iters = 5;
-    if (!options.learning_rate) options.learning_rate = 0.5;
-    if (!options.regularization) options.regularization = 0.1;
-    if (!options.error_bound) options.change_cost = 0.001;
-    if (label.length !== this.layer3) return false;
-    if (input.length !== this.layer1) return false;
+    if (!options.iters) options.iters = 10;
+    if (!options.learning_rate) options.learning_rate = 0.3;
+    if (!options.regularization) options.regularization = 0.3;
+    if (!options.change_cost) options.change_cost = 0.00001;
 
     //Performs stochastic gradient descent
     var lastCost = 0;
     for (var i = 0; i < options.iters; i += 1) {
         var currentCost = 0;
         for (var m = 0; m < options.iters; m += 1) {
-            currentCost += this.gradientDescent(input[m], label[m], options);
+            currentCost += this.gradientDescent(inputs[m], labels[m], options);
         }
         //If the cost is increasing or the change in cost is less than options.change_cost, finish learning
         if (i > 0 && (math.abs(currentCost - lastCost) <= options.error_bound || currentCost > lastCost)) return true;
