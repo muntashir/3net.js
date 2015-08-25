@@ -63,3 +63,5 @@ A simple library for implementing 3 layer neural networks
     console.log(net.predict([1, 0])); // Outputs 0.9836636258293651
 
     // Output values be slightly different when you try it because of random intialization
+
+A live training example can be found [here](https://github.com/muntashir/draw3net)
