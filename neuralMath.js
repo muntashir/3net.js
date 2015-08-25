@@ -1,6 +1,10 @@
 var math = require('mathjs');
 
 function rectify(x) {
+    if (!x.length) {
+        return math.max(0, x);
+    }
+
     var x2 = [];
     for (var i = 0; i < x.length; i += 1) {
         x2.push(math.max(x[i], 0));
@@ -9,9 +13,17 @@ function rectify(x) {
 }
 
 function dRectify(x) {
+    if (!x.length) {
+        if (x < 0) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
     var x2 = [];
     for (var i = 0; i < x.length; i += 1) {
-        if (x(i) < 0) {
+        if (x[i] < 0) {
             x2.push(0);
         } else {
             x2.push(1);
@@ -65,8 +77,8 @@ function getCost(pred, actual, theta, options) {
     return cost;
 }
 
-exports.sigmoid = rectify;
-exports.sigmoid = dRectify;
+exports.rectify = rectify;
+exports.dRectify = dRectify;
 exports.sigmoid = sigmoid;
 exports.dSigmoid = dSigmoid;
 exports.outerProduct = outerProduct;
