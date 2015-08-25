@@ -5,11 +5,11 @@ A simple library for implementing 3 layer neural networks
 [![NPM](https://nodei.co/npm/3net.js.png)](https://npmjs.org/package/3net.js)
 
 #### Initialization
-    var three_net = require('3net.js');  // Install with 'npm install 3net.js'
+    var three_net = require('3net.js');     // Install with 'npm install 3net.js'
     var inputLayer = 400;
     var hiddenLayer = 25;
     var outputLayer = 10;
-    var neuron = "rectifier"; // Currently sigmoid and rectifier are supported
+    var neuron = "rectifier";               // Currently sigmoid and rectifier are supported
     
     //If neuron is not specified, the default sigmoid will be used
     var net = three_net.createNet(inputLayer, hiddenLayer, outputLayer, neuron);  
@@ -17,8 +17,8 @@ A simple library for implementing 3 layer neural networks
 #### Online training 
     // If options is not specified, the default values will be used.
     options = {
-        "learning_rate": 0.3,   // Learning rate for gradient descent. The default is 0.3
-        "regularization": 0.3,  // Regularization parameter to prevent overfitting. The default is 0.3
+        "learning_rate": 0.3,   // Learning rate for gradient descent. The default is 0.5
+        "regularization": 0.3,  // Regularization parameter to prevent overfitting. The default is 0
     };
     
     // Data and label must be an array matching the dimensions of the input layer and output layer
@@ -30,9 +30,9 @@ A simple library for implementing 3 layer neural networks
 #### Training on a set 
     // If options is not specified, the default values will be used.
     options = {
-        "iters": 0.3,               // Maximum amount of time stochastic gradient descent will run. The default is 10
-        "learning_rate": 0.3,       // Learning rate for gradient descent. The default is 0.3
-        "regularization": 0.3,      // Regularization parameter to prevent overfitting. The default is 0.3
+        "iters": 100,               // Maximum amount of time stochastic gradient descent will run. The default is 1000
+        "learning_rate": 0.5,       // Learning rate for gradient descent. The default is 0.5
+        "regularization": 1,        // Regularization parameter to prevent overfitting. The default is 0
         "change_cost": 0.00001,     // If the change in cost between iterations is less than this, the net will stop training. The default is 0.00001
     };
     
@@ -48,3 +48,18 @@ A simple library for implementing 3 layer neural networks
 #### Importing and exporting
     var savedNet = net.exportNet();                 // Exports as JSON
     var copiedNet = three_net.importNet(savedNet);  // Imports from JSON
+  
+#### Example: Training an XOR
+    var three_net = require('3net.js');
+    var net = three_net.createNet(2, 3, 1);
+
+    inputs = [[0, 0], [0, 1], [1, 0], [1, 1]];
+    labels = [[0], [1], [1], [0]];
+
+    // Uses default options since it is not specified
+    net.trainSet(inputs, labels);
+
+    console.log(net.predict([1, 1])); // Outputs 0.020773462753469724
+    console.log(net.predict([1, 0])); // Outputs 0.9836636258293651
+
+    // Output values be slightly different when you try it because of random intialization
