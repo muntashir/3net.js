@@ -9,11 +9,19 @@ neuralNetwork.prototype.predict = function (input) {
 
     //Layer 2
     this.z2 = math.multiply(this.theta1, this.a1);
-    this.a2 = math.concat([1], neuralMath.sigmoid(this.z2));
+    if (this.neuron === "sigmoid") {
+        this.a2 = math.concat([1], neuralMath.sigmoid(this.z2));
+    } else if (this.neuron === "rectifier") {
+        this.a2 = math.concat([1], neuralMath.rectify(this.z2));
+    }
 
     //Layer 3
     this.z3 = math.multiply(this.theta2, this.a2);
-    this.a3 = neuralMath.sigmoid(this.z3);
+    if (this.neuron === "sigmoid") {
+        this.a3 = neuralMath.sigmoid(this.z3);
+    } else if (this.neuron === "rectifier") {
+        this.a3 = neuralMath.rectify(this.z3);
+    }
 
     return this.a3;
 }
@@ -24,7 +32,15 @@ neuralNetwork.prototype.backpropagation = function (input, label, options) {
 
     //Backwards
     var d3 = math.subtract(this.a3, label);
-    var d2 = math.dotMultiply(math.multiply(math.transpose(this.theta2), d3), neuralMath.dSigmoid(math.concat([1], this.z2)));
+
+    var deriv;
+    if (this.neuron === "sigmoid") {
+        deriv = neuralMath.dSigmoid(math.concat([1], this.z2));
+    } else if (this.neuron === "rectifier") {
+        deriv = neuralMath.dRectify(math.concat([1], this.z2));
+    }
+
+    var d2 = math.dotMultiply(math.multiply(math.transpose(this.theta2), d3), deriv);
     d2 = math.subset(d2, math.index(math.range(1, math.size(d2)[0])));
 
     //Get gradients
@@ -45,26 +61,21 @@ neuralNetwork.prototype.backpropagation = function (input, label, options) {
     }
 }
 
+//Performs 1 iteration of gradient descent on an input and label and returns its cost
 neuralNetwork.prototype.gradientDescent = function (input, label, options) {
-    var lastCost = neuralMath.getCost(this.a3, label, [this.theta1, this.theta2], options);
-    for (var i = 0; i < options.iters; i += 1) {
-        this.backpropagation(input, label, options);
+    this.backpropagation(input, label, options);
 
-        var currentCost = neuralMath.getCost(this.a3, label, [this.theta1, this.theta2], options);
-        if (i > 0 && (math.abs(currentCost - lastCost) <= options.error_bound || currentCost > lastCost)) return;
-        lastCost = currentCost;
+    this.theta1 = math.subtract(this.theta1, math.dotMultiply(options.learning_rate, this.theta1gradient));
+    this.theta2 = math.subtract(this.theta2, math.dotMultiply(options.learning_rate, this.theta2gradient));
 
-        this.theta1 = math.subtract(this.theta1, math.dotMultiply(options.learning_rate, this.theta1gradient));
-        this.theta2 = math.subtract(this.theta2, math.dotMultiply(options.learning_rate, this.theta2gradient));
-    }
+    return neuralMath.getCost(this.a3, label, [this.theta1, this.theta2], options);
 }
 
+//Trains one set at a time for online networks
 neuralNetwork.prototype.train = function (input, label, options) {
     if (!options) options = {};
-    if (!options.iters) options.iters = 500;
     if (!options.learning_rate) options.learning_rate = 0.5;
     if (!options.regularization) options.regularization = 0.1;
-    if (!options.error_bound) options.error_bound = 0.001;
     if (label.length !== this.layer3) return false;
     if (input.length !== this.layer1) return false;
 
@@ -72,6 +83,32 @@ neuralNetwork.prototype.train = function (input, label, options) {
     return true;
 }
 
+//Trains on a training set using stochastic gradient descent
+neuralNetwork.prototype.trainSet = function (input, label, options) {
+    if (!options) options = {};
+    if (!options.iters) options.iters = 5;
+    if (!options.learning_rate) options.learning_rate = 0.5;
+    if (!options.regularization) options.regularization = 0.1;
+    if (!options.error_bound) options.change_cost = 0.001;
+    if (label.length !== this.layer3) return false;
+    if (input.length !== this.layer1) return false;
+
+    //Performs stochastic gradient descent
+    var lastCost = 0;
+    for (var i = 0; i < options.iters; i += 1) {
+        var currentCost = 0;
+        for (var m = 0; m < options.iters; m += 1) {
+            currentCost += this.gradientDescent(input[m], label[m], options);
+        }
+        //If the cost is increasing or the change in cost is less than options.change_cost, finish learning
+        if (i > 0 && (math.abs(currentCost - lastCost) <= options.error_bound || currentCost > lastCost)) return true;
+        lastCost = currentCost;
+    }
+
+    return true;
+}
+
+//Exports the network as JSON
 neuralNetwork.prototype.exportNet = function () {
     var data = {};
     data.layer1 = this.layer1;
@@ -79,13 +116,20 @@ neuralNetwork.prototype.exportNet = function () {
     data.layer3 = this.layer3;
     data.theta1 = this.theta1;
     data.theta2 = this.theta2;
+    data.neuron = this.neuron;
     return data;
 }
 
-function neuralNetwork(layer1, layer2, layer3, theta) {
+function neuralNetwork(layer1, layer2, layer3, neuron, theta) {
     this.layer1 = layer1;
     this.layer2 = layer2;
     this.layer3 = layer3;
+
+    if (!neuron) {
+        this.neuron = "sigmoid";
+    } else {
+        this.neuron = neuron;
+    }
 
     if (!theta) {
         this.theta1 = math.random([layer2, layer1 + 1], -5, 5);
@@ -105,12 +149,12 @@ function neuralNetwork(layer1, layer2, layer3, theta) {
     this.a3 = math.zeros(layer3 + 1);
 }
 
-function createNet(layer1, layer2, layer3) {
-    return new neuralNetwork(layer1, layer2, layer3);
+function createNet(layer1, layer2, layer3, neuron) {
+    return new neuralNetwork(layer1, layer2, layer3, neuron);
 }
 
 function importNet(data) {
-    return new neuralNetwork(data.layer1, data.layer2, data.layer3, [data.theta1, data.theta2]);
+    return new neuralNetwork(data.layer1, data.layer2, data.layer3, data.neuron, [data.theta1, data.theta2]);
 }
 
 exports.createNet = createNet;
