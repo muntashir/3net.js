@@ -9,19 +9,37 @@ A simple library for implementing 3 layer neural networks
     var inputLayer = 400;
     var hiddenLayer = 25;
     var outputLayer = 10;
-    var net = three_net.createNet(inputLayer, hiddenLayer, outputLayer);  
+    var neuron = "rectifier"; // Currently sigmoid and rectifier are supported
     
-#### Training
+    //If neuron is not specified, the default sigmoid will be used
+    var net = three_net.createNet(inputLayer, hiddenLayer, outputLayer, neuron);  
+    
+#### Online training 
+    // If options is not specified, the default values will be used.
     options = {
-        "iters": 500,           // Max number of iterations for gradient descent. Default is 500.
-        "learning_rate": 0.5,   // Learning rate for gradient descent. Default is 0.5.
-        "regularization": 0.1,  // Regularization parameter to prevent overfitting. Default is 0.1.
-        "error_bound": 0.001    // If the change in cost is less than this value during gradient descent, it finishes. Default is 0.001.
+        "learning_rate": 0.3,   // Learning rate for gradient descent. The default is 0.3
+        "regularization": 0.3,  // Regularization parameter to prevent overfitting. The default is 0.3
     };
     
-    // Data and label must be an array matching the dimensions of the input layer and output layer. 
-    // If options is not specified, the default values will be used. Returns true if training was successful, else returns false.
+    // Data and label must be an array matching the dimensions of the input layer and output layer
     var success = net.train(data, label, options);
+    
+    //Returns true if training was successful
+    if (success) console.log("training complete");  
+    
+#### Training on a set 
+    // If options is not specified, the default values will be used.
+    options = {
+        "iters": 0.3,               // Maximum amount of time stochastic gradient descent will run. The default is 10
+        "learning_rate": 0.3,       // Learning rate for gradient descent. The default is 0.3
+        "regularization": 0.3,      // Regularization parameter to prevent overfitting. The default is 0.3
+        "change_cost": 0.00001,     // If the change in cost between iterations is less than this, the net will stop training. The default is 0.00001
+    };
+    
+    // Data and label are arrays containing the training set
+    var success = net.trainSet(dataset, labels, options);
+    
+    //Returns true if training was successful
     if (success) console.log("training complete");  
     
 #### Predicting
@@ -29,4 +47,4 @@ A simple library for implementing 3 layer neural networks
     
 #### Importing and exporting
     var savedNet = net.exportNet();                 // Exports as JSON
-    var copiedNet = three_net.importNet(savedNet);  // Imports as JSON
+    var copiedNet = three_net.importNet(savedNet);  // Imports from JSON
