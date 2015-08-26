@@ -64,4 +64,4 @@ A simple library for implementing 3 layer neural networks
 
     // Output values be slightly different when you try it because of random intialization
 
-A live training example can be found [here](https://github.com/muntashir/draw3net)
+#### An online training example can be found [here](https://github.com/muntashir/draw3net)
