@@ -1,5 +1,19 @@
 var math = require('mathjs');
 
+function getDropConnectMatrix(theta, p) {
+    var dropConnectMatrix = math.random([math.size(theta)[0], math.size(theta)[1]], 0, 1);
+    for (var i = 0; i < math.size(theta)[0]; i += 1) {
+        for (var j = 0; j < math.size(theta)[1]; j += 1) {
+            if (dropConnectMatrix[i][j] <= p) {
+                dropConnectMatrix[i][j] = 0;
+            } else {
+                dropConnectMatrix[i][j] = 1;
+            }
+        }
+        return dropConnectMatrix;
+    }
+}
+
 function rectify(x) {
     if (!x.length) {
         return math.max(0, x);
@@ -85,6 +99,7 @@ function getCost(pred, actual, theta, options) {
     return cost;
 }
 
+exports.getDropConnectMatrix = getDropConnectMatrix;
 exports.tanh = tanh;
 exports.dTanh = dTanh;
 exports.rectify = rectify;
