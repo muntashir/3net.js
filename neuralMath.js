@@ -32,6 +32,14 @@ function dRectify(x) {
     return x2;
 }
 
+function tanh(x) {
+    return math.tanh(x);
+}
+
+function dTanh(x) {
+    return math.square(math.sech(x));
+}
+
 function sigmoid(x) {
     return math.dotDivide(1, math.add(1, math.exp(math.multiply(-1, x))));
 }
@@ -77,6 +85,8 @@ function getCost(pred, actual, theta, options) {
     return cost;
 }
 
+exports.tanh = tanh;
+exports.dTanh = dTanh;
 exports.rectify = rectify;
 exports.dRectify = dRectify;
 exports.sigmoid = sigmoid;

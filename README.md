@@ -9,7 +9,7 @@ A simple library for implementing 3 layer neural networks
     var inputLayer = 400;
     var hiddenLayer = 25;
     var outputLayer = 10;
-    var neuron = "rectifier";               // Currently sigmoid and rectifier are supported
+    var neuron = "rectifier";               // The activation function. Can be "rectifier", "sigmoid", or "tanh"
     
     //If neuron is not specified, the default sigmoid will be used
     var net = three_net.createNet(inputLayer, hiddenLayer, outputLayer, neuron);  
