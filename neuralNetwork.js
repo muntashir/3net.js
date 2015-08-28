@@ -88,7 +88,7 @@ neuralNetwork.prototype.trainSet = function (inputs, labels, options) {
     if (!options.iters) options.iters = 1000;
     if (!options.learning_rate) options.learning_rate = 0.5;
     if (!options.regularization) options.regularization = 0;
-    if (!options.dropconnect) options.dropconnect = 0.0000001;
+    if (!options.dropconnect) options.dropconnect = 0;
     if (!options.change_cost) options.change_cost = 0.00001;
     this.options = options;
 

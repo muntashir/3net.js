@@ -2,6 +2,7 @@ var math = require('mathjs');
 
 function getDropConnectMatrix(theta, p) {
     var dropConnectMatrix = math.random([math.size(theta)[0], math.size(theta)[1]], 0, 1);
+
     for (var i = 0; i < math.size(theta)[0]; i += 1) {
         for (var j = 0; j < math.size(theta)[1]; j += 1) {
             if (dropConnectMatrix[i][j] <= p) {
@@ -9,9 +10,11 @@ function getDropConnectMatrix(theta, p) {
             } else {
                 dropConnectMatrix[i][j] = 1;
             }
+
         }
-        return dropConnectMatrix;
     }
+
+    return dropConnectMatrix;
 }
 
 function rectify(x) {
