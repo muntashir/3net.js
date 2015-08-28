@@ -18,7 +18,7 @@ A simple library for implementing 3 layer neural networks
     // If options is not specified, the default values will be used.
     options = {
         "learning_rate": 0.3,   // Learning rate for gradient descent. The default is 0.5
-        "regularization": 0.3,  // Regularization parameter to prevent overfitting. The default is 0
+        "regularization": 0.3,  // L2 regularization parameter to prevent overfitting. The default is 0
     };
     
     // Data and label must be an array matching the dimensions of the input layer and output layer
@@ -32,8 +32,8 @@ A simple library for implementing 3 layer neural networks
     options = {
         "iters": 100,               // Maximum amount of time stochastic gradient descent will run. The default is 1000
         "learning_rate": 0.5,       // Learning rate for gradient descent. The default is 0.5
-        "regularization": 1,        // Regularization parameter to prevent overfitting. The default is 0
-        "change_cost": 0.00001,     // If the change in cost between iterations is less than this, the net will stop training. The default is 0.00001
+        "regularization": 1,        // L2 regularization parameter to prevent overfitting. The default is 0
+        "change_cost": 0.00001,     // If the change in cross entropy cost between iterations is less than this, the net will stop training. The default is 0.00001
     };
     
     // Data and label are arrays containing the training set
