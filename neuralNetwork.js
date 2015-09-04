@@ -127,7 +127,7 @@ function neuralNetwork(layer1, layer2, layer3, neuron, theta) {
     if (neuron == "sigmoid") {
         this.activationFunction = neuralMath.sigmoid;
         this.activationDerivative = neuralMath.dSigmoid;
-    } else if (neuron == "rectify") {
+    } else if (neuron == "rectifier") {
         this.activationFunction = neuralMath.rectify;
         this.activationDerivative = neuralMath.dRectify;
     } else if (neuron == "tanh") {
