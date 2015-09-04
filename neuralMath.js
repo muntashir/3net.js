@@ -19,7 +19,7 @@ function getDropConnectMatrix(theta, p) {
 
 function rectify(x) {
     if (!x.length) {
-        return math.max(0, x);
+        x = [x];
     }
 
     var x2 = [];
@@ -31,11 +31,7 @@ function rectify(x) {
 
 function dRectify(x) {
     if (!x.length) {
-        if (x < 0) {
-            return 0;
-        } else {
-            return 1;
-        }
+        x = [x];
     }
 
     var x2 = [];
@@ -50,11 +46,24 @@ function dRectify(x) {
 }
 
 function tanh(x) {
-    return math.tanh(x);
+    if (!x.length) {
+        x = [x];
+    }
+
+    var x2 = [];
+    for (var i = 0; i < x.length; i += 1) {
+        if (x[i] > 100) {
+            x2.push(1);
+        } else {
+            x2.push(math.tanh(x[i]));
+        }
+    }
+
+    return x2;
 }
 
 function dTanh(x) {
-    return math.square(math.sech(x));
+    return math.subtract(1, math.square(tanh(x)));
 }
 
 function sigmoid(x) {
