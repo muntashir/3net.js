@@ -1,6 +1,6 @@
 {
     "name": "3net.js",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "A simple library for implementing 3 layer neural networks",
     "main": "index.js",
     "keywords": [
