@@ -124,6 +124,8 @@ function neuralNetwork(layer1, layer2, layer3, neuron, theta) {
     this.layer2 = layer2;
     this.layer3 = layer3;
 
+    this.neuron = neuron;
+
     if (neuron == "sigmoid") {
         this.activationFunction = neuralMath.sigmoid;
         this.activationDerivative = neuralMath.dSigmoid;
@@ -134,6 +136,7 @@ function neuralNetwork(layer1, layer2, layer3, neuron, theta) {
         this.activationFunction = neuralMath.tanh;
         this.activationDerivative = neuralMath.dTanh;
     } else {
+        this.neuron = "sigmoid";
         this.activationFunction = neuralMath.sigmoid;
         this.activationDerivative = neuralMath.dSigmoid;
     }
